@@ -1,11 +1,11 @@
 DROP TABLE IF EXISTS person CASCADE;
-DROP TABLE IF EXITS destinations;
+DROP TABLE IF EXISTS destinations;
 
 CREATE TABLE person (
     id SERIAL PRIMARY KEY,
     last_name VARCHAR(100),
     first_name VARCHAR(100),
-    cell_phone VARCHAR
+    cell_phone VARCHAR,
     affiliation VARCHAR(100),
     position VARCHAR(100),
     arrival_date DATE,
