@@ -1,6 +1,11 @@
 DROP TABLE IF EXISTS person CASCADE;
 DROP TABLE IF EXISTS destinations;
 
+CREATE TABLE destinations (
+    id SERIAL PRIMARY KEY,
+    airport TEXT
+);
+
 CREATE TABLE person (
     id SERIAL PRIMARY KEY,
     last_name VARCHAR(100),
@@ -10,12 +15,6 @@ CREATE TABLE person (
     position VARCHAR(100),
     arrival_date DATE,
     arrival_time TIME,
-    destination_id INT FOREIGN KEY REFERENCES destinations(id)
+    destination_id INT REFERENCES destinations(id)
 
-)
-
-CREATE TABLE destinations (
-    id SERIAL PRIMARY KEY,
-    airport TEXT
-
-)
+);

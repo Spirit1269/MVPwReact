@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
     res.send("Hello, world!");
 });
 
-app.get('/api/test', (req, res) => {
+app.get('/api/person', (req, res) => {
     pool.query(`SELECT * FROM person`, (err, response) => {
         console.log(err ? err : response.rows)
         res.json(response.rows)
