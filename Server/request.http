@@ -3,3 +3,33 @@ GET http://localhost:3009
 
 ###
 GET http://localhost:3009/api/person
+
+###
+GET http://localhost:3009/api/destinations
+
+###
+POST http://localhost:3009/api/person
+Content-Type:  application/json
+
+{
+    "last_name":  "Jenkins",
+    "first_name": "Brielle",
+    "cell_phone":  "410-270-2710",
+    "affiliation":  "University",
+    "position":  "rider",
+    "arrival_date":  "2023-05-30",
+    "arrival_time":  "19:00",
+    "destination_id":  1
+}
+
+###
+DELETE http://localhost:3009/api/person/17
+
+###
+PATCH http://localhost:3009/api/person/8
+Content-Type: application/json
+
+{
+    "arrival_date":  "2023-05-22"
+}
+
