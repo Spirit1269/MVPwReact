@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import pg from "pg";
 import { check, validationResult } from 'express-validator';
-//const { Client } = pg;  //<--not used if using pool()
+
 const { Pool } = pg;
 
 const app = express();
@@ -18,9 +18,10 @@ const pool = new Pool({
 app.use(express.json());  //<--has to be before routes
 
 app.get("/", (req, res) => {   
-    res.send("Hello, world!");
+    res.send("Hello world!");
 });
 
+//Get all persons
 app.get('/api/person', (req, res) => {
     pool.query(`SELECT * FROM person`, (err, response) => {
         console.log(err ? err : response.rows)
@@ -28,6 +29,7 @@ app.get('/api/person', (req, res) => {
     })
 })
 
+//Get all Destinations
 app.get('/api/destinations', (req, res) => {
     pool.query(`SELECT * FROM destinations`, (err, response) => {
         console.log(err ? err : response.rows)
@@ -35,6 +37,7 @@ app.get('/api/destinations', (req, res) => {
     })
 })
 
+//Create a Person
 app.post('/api/person',  [
     check('last_name').notEmpty().withMessage('Last Name is required'),
     check('first_name').notEmpty().withMessage('First Name is required'),
@@ -71,6 +74,7 @@ app.post('/api/person',  [
      
 }); 
 
+//Delete a person
 app.delete('/api/person/:id', (req, res) => {
     const id = req.params.id; // Get the id from URL parameter
 
@@ -85,6 +89,8 @@ app.delete('/api/person/:id', (req, res) => {
         }
     })
 })
+
+//Update a Person
     app.patch('/api/person/:id', (req, res) => {
         const id = req.params.id; // Get the id from URL parameter
         const { last_name, first_name, cell_phone, affiliation, position, arrival_date, arrival_time, destination_id} = req.body; // Get the updated data from request body
