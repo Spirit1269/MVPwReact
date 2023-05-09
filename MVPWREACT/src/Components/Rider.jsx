@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Card, Button } from 'react-bootstrap';
+import { Container, Row, Card } from 'react-bootstrap';
 
 const Rider = () => {
   const [riders, setRiders] = useState([]);
-
+  const [destinations, setDestinations] = useState({});
+  
   useEffect(() => {
     fetch('http://localhost:3009/api/person/rider')
       .then(response => response.json())
       .then(data => setRiders(data))
       .catch(error => console.log(error));
   }, []);
+
+useEffect(() => {
+    fetch('http://localhost:3009/api/destinations')
+      .then(response => response.json())
+      .then(data => {
+        const destMap = {};
+        data.forEach(dest => {
+          destMap[dest.id] = dest;
+        });
+        setDestinations(destMap);
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  const getDestinationName = (destId) => {
+    const dest = destinations[destId];
+    return dest ? dest.airport : '';
+  }
+
 
   return (
     <Container>
@@ -23,9 +43,9 @@ const Rider = () => {
               <Card.Text>
                 ID: {rider.id} <br />
                 Affiliation: {rider.affiliation} <br />
-                Arrival Date: {rider.arrival_date} <br />
+                Arrival Date: {new Date(rider.arrival_date).toLocaleDateString('en-CA')} <br />
                 Arrival Time: {rider.arrival_time} <br />
-                Destination: {rider.destination_id.airport} <br />
+                 Destination: {getDestinationName(rider.destination_id)} <br />
               </Card.Text>
               {/* <Button variant="primary">View Details</Button> */}
             </Card.Body>

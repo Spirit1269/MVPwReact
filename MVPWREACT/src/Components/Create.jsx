@@ -101,7 +101,7 @@ const Create = ({ handleCreateClick }) => {
           />
         </Form.Group>
         <Form.Group controlId="affiliation">
-          <Form.Label>Affiliation</Form.Label>
+          <Form.Label>Affiliation (Military or University)</Form.Label>
           <Form.Control
             type="text"
             name="affiliation"
@@ -110,7 +110,7 @@ const Create = ({ handleCreateClick }) => {
           />
         </Form.Group>
         <Form.Group controlId="position">
-          <Form.Label>Position</Form.Label>
+          <Form.Label>Position (Rider or Driver)</Form.Label>
           <Form.Control
             type="text"
             name="position"
