@@ -4,23 +4,25 @@ const Delete = () => {
   const [id, setId] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleDelete = () => {
+  const handleDelete = (event) => {
+    event.preventDefault();
     fetch(`http://localhost:3009/api/person/${id}`, {
       method: "DELETE",
+      headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        if (response.ok) {
-          setSuccess(true);
-        } else {
-          console.error("Failed to delete item");
+        if (!response.ok) {
+          throw new Error(response.statusText);
         }
+        setSuccess(true);
+        return response.json();
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.log(error));
   };
 
   return (
     <div>
-      <h2>Delete Item</h2>
+      <h2>Delete Account</h2>
       <div className="form-group">
         <label htmlFor="idInput">Enter ID to delete:</label>
         <input
