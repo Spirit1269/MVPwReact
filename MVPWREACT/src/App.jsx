@@ -1,11 +1,10 @@
-// import { useState } from 'react'
+//  import { useState } from 'react'
 import React, {Fragment} from "react";
 import './App.css'
 
 //components
 
-import Menu from "./Components/Menu";
-import Create from "./Components/Create";
+import Menu2 from "./Components/Menu2"
 
 function App() {
 
@@ -14,8 +13,8 @@ function App() {
     
       <Fragment>
         <div className = "container">
-            <Menu/>
-            <Create/>
+            <Menu2/>
+          
         </div>
         
       </Fragment>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
-const Create = () => {
+const Create = ({ handleCreateClick }) => {
   const [formData, setFormData] = useState({
     last_name: "",
     first_name: "",
@@ -14,103 +14,119 @@ const Create = () => {
   });
 
   const [destinations, setDestinations] = useState([]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = new FormData();
-    for (const key in formData) {
-      form.append(key, formData[key]);
-    }
-    fetch("http://localhost:3009/api/person", {
-      method: "POST",
-      body: form,
-    })
-      .then((response) => {
-        // handle success response
-        console.log(response);
-      })
-      .catch((error) => {
-        // handle error response
-        console.error(error);
-      });
-  };
-  
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:3009/api/destinations")
       .then(response => response.json())
       .then((data) => {
         setDestinations(data);
-        console.log(data); // move the console log inside the .then() method
       })
       .catch((error) => console.error(error));
   }, []);
-  
-  
-  
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch("http://localhost:3009/api/person", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...formData,
+        destination_id: parseInt(formData.destination_id),
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        setIsSuccess(true);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setFormData({
+          last_name: "",
+          first_name: "",
+          cell_phone: "",
+          affiliation: "",
+          position: "",
+          arrival_date: "",
+          arrival_time: "",
+          destination_id: "",
+        });
+        handleCreateClick(); // call the parent component's callback to close the modal
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="last_name">
-        <Form.Label>Last Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Form.Group controlId="first_name">
-        <Form.Label>First Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="first_name"
-          value={formData.first_name}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Form.Group controlId="cell_phone">
-        <Form.Label>Cell Phone</Form.Label>
-        <Form.Control
-          type="text"
-          name="cell_phone"
-          value={formData.cell_phone}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="affiliation">
-        <Form.Label>Affiliation</Form.Label>
-        <Form.Control
-          type="text"
-          name="affiliation"
-          value={formData.affiliation}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="position">
-        <Form.Label>Position</Form.Label>
-        <Form.Control
-          type="text"
-          name="position"
-          value={formData.position}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="arrival_date">
-        <Form.Label>Arrival Date</Form.Label>
-        <Form.Control
-          type="date"
-          name="arrival_date"
-          value={formData.arrival_date}
-          onChange={handleChange}
-        />
-      </Form.Group>
+    <>
+      {isSuccess && <Alert variant="success">Person added successfully</Alert>}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="last_name">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="first_name">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="cell_phone">
+          <Form.Label>Cell Phone</Form.Label>
+          <Form.Control
+            type="text"
+            name="cell_phone"
+            value={formData.cell_phone}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="affiliation">
+          <Form.Label>Affiliation</Form.Label>
+          <Form.Control
+            type="text"
+            name="affiliation"
+            value={formData.affiliation}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="position">
+          <Form.Label>Position</Form.Label>
+          <Form.Control
+            type="text"
+            name="position"
+            value={formData.position}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="arrival_date">
+          <Form.Label>Arrival Date</Form.Label>
+          <Form.Control
+            type="date"
+            name="arrival_date"
+            value={formData.arrival_date}
+            onChange={handleChange}
+          />
+        </Form.Group>
       <Form.Group controlId="arrival_time">
         <Form.Label>Arrival Time</Form.Label>
         <Form.Control
@@ -122,7 +138,7 @@ const Create = () => {
       </Form.Group>
     
       <Form.Group controlId="destination_id">
-        <Form.Label>Destination ID</Form.Label>
+        <Form.Label>Destination</Form.Label>
         <Form.Control
             as="select"
             name="destination_id"
@@ -135,10 +151,10 @@ const Create = () => {
                 ))}
         </Form.Control>
     </Form.Group>
-
+       
       <Button type="submit">Submit</Button>
     </Form>
-  );
-};
-
+    </>
+  )
+ }
 export default Create;
