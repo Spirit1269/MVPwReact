@@ -5,6 +5,13 @@ GET http://localhost:3009
 GET http://localhost:3009/api/person
 
 ###
+GET http://localhost:3009/api/person/rider
+
+###
+GET http://localhost:3009/api/person/driver
+
+
+###
 GET http://localhost:3009/api/destinations
 
 ###
@@ -16,14 +23,14 @@ Content-Type:  application/json
     "first_name": "Brielle",
     "cell_phone":  "410-270-2710",
     "affiliation":  "University",
-    "position":  "rider",
+    "position":  "Rider",
     "arrival_date":  "2023-05-30",
     "arrival_time":  "19:00",
     "destination_id":  1
 }
 
 ###
-DELETE http://localhost:3009/api/person/17
+DELETE http://localhost:3009/api/person/18
 
 ###
 PATCH http://localhost:3009/api/person/8
@@ -33,3 +40,5 @@ Content-Type: application/json
     "arrival_date":  "2023-05-22"
 }
 
+###
+DELETE http://localhost:3009/api/destinations/6

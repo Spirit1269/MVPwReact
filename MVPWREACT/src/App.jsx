@@ -5,6 +5,7 @@ import './App.css'
 //components
 
 import Menu from "./Components/Menu";
+import Create from "./Components/Create";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Fragment>
         <div className = "container">
             <Menu/>
+            <Create/>
         </div>
         
       </Fragment>

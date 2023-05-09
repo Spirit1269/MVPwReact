@@ -29,6 +29,22 @@ app.get('/api/person', (req, res) => {
     })
 })
 
+//Get all persons that are riders
+app.get('/api/person/rider', (req, res) => {
+    pool.query(`SELECT * FROM person WHERE position = 'Rider'`, (err, response) => {
+        console.log(err ? err : response.rows)
+        res.json(response.rows)
+    })
+})
+
+//Get all persons that are Drivers
+app.get('/api/person/driver', (req, res) => {
+    pool.query(`SELECT * FROM person WHERE position = 'Driver'`, (err, response) => {
+        console.log(err ? err : response.rows)
+        res.json(response.rows)
+    })
+})
+
 //Get all Destinations
 app.get('/api/destinations', (req, res) => {
     pool.query(`SELECT * FROM destinations`, (err, response) => {
@@ -89,6 +105,7 @@ app.delete('/api/person/:id', (req, res) => {
         }
     })
 })
+
 
 //Update a Person
     app.patch('/api/person/:id', (req, res) => {
